@@ -1,71 +1,176 @@
-# TrinetLayer Cyber Labs
+<div align="center">
 
-A hands-on cyber range for learning to think like a defender. Five guided
-investigations take you from a weak login all the way to raw HTTP analysis —
-every target is a **safe, simulated, in-browser** recreation of a vulnerable
-app. Real vulnerabilities, zero real risk.
+# 🛡️ TrinetLayer Cyber Labs
+### *Interactive Cyber Range & Hands-On Application Security Learning Platform*
 
-> **Educational simulation — no external targets.** Nothing here contacts real
-> websites, servers, accounts, or IP addresses. See [`docs/SECURITY.md`](docs/SECURITY.md).
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://security-lab-ivory.vercel.app)
+[![React 19](https://img.shields.io/badge/React-19.0-blue?style=for-the-badge&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-## Stack
+<br />
 
-- **React 19** + **TypeScript** (function components, hooks)
-- **Vite** (dev server + esbuild bundling)
-- **Tailwind CSS v4** via `@tailwindcss/vite` (tokens live in `src/index.css`)
-- **Ultra-lean UI** — zero heavy runtime UI dependencies. Icons are handcrafted SVG primitives, interactive canvases use the native 2D Canvas API, and motion is hardware-accelerated with CSS and `IntersectionObserver`. This keeps the production bundle under 120kB gzip.
+**TrinetLayer Cyber Labs** is a modern, gamified cyber learning platform designed to teach practical application security from a defender's perspective. Featuring five guided, multi-step investigations, learners analyze and patch real vulnerabilities inside **100% safe, client-side browser simulations**.
 
-## Getting Started
+[**Explore Live Platform**](https://security-lab-ivory.vercel.app) • [**View Lab Catalog**](#-the-five-security-labs) • [**Architecture**](docs/ARCHITECTURE.md) • [**Security Boundary**](docs/SECURITY.md)
 
-```bash
-pnpm install # or npm install
-pnpm dev     # start the Vite dev server
-pnpm build   # production build
-pnpm preview # preview production bundle
+</div>
+
+---
+
+## 🌟 Core Highlights
+
+- **🔒 Safe & Isolated Sandbox** — Every target is a fully contained in-memory simulation. Zero external network requests, zero real risk.
+- **🎯 Multi-Step Investigations** — Structured `Observe` ➔ `Probe` ➔ `Decide` ➔ `Mitigate` investigation workflow for each vulnerability domain.
+- **⚡ Ultra-Lean Performance** — Handcrafted SVG primitives, native Canvas 2D particle systems, and zero heavy runtime libraries. Production bundle weighs **< 120 kB gzip**.
+- **📊 Adaptive Skill Radar & Analytics** — Deterministic client-side engine calculates skill profiles, dynamic recommendations, and tiered hint scoring.
+- **🏆 Gamification & CTF Flags** — Score tracking (100 base score with attempt/hint deductions), achievement unlocks, and persistent progress via `localStorage`.
+- **♿ Accessible & Responsive** — Dark-mode command-center aesthetics, full keyboard navigation, ARIA semantic landmarks, and fluid responsiveness from mobile (390px) to 4K displays.
+
+---
+
+## 🧪 The Five Security Labs
+
+| # | Lab Codename | Vulnerability Domain | Difficulty | Est. Time | Key Learning Objectives |
+|:---:|:---|:---|:---:|:---:|:---|
+| **01** | **The Weak Front Door** | `Authentication` | Beginner | 15 min | Identify username enumeration, analyze leaking error messages, enforce generic authentication responses & rate limiting. |
+| **02** | **Who Owns This Record?** | `Authorization (IDOR/BOLA)` | Beginner | 15 min | Exploit missing object ownership checks via parameter tampering, implement server-side access control validation. |
+| **03** | **The Injection Point** | `Input Validation & XSS` | Intermediate | 20 min | Run interactive 7-point input test suites, observe unsanitized reflection, enforce context-aware encoding & strict CSP. |
+| **04** | **The Hardened Baseline** | `Security Configuration` | Intermediate | 20 min | Audit live configuration files for `DEBUG` flags, wildcard CORS, and plaintext secrets; align with Principle of Least Privilege. |
+| **05** | **The Wire Inspector** | `HTTP Security & Traffic Analysis` | Advanced | 25 min | Inspect raw HTTP requests and responses; analyze `HttpOnly`, `Secure`, `SameSite` flags, HSTS, and header hardening. |
+
+---
+
+## 🖥️ Interactive Simulation Engines
+
+TrinetLayer features four purpose-built simulation engines:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        TRINETLAYER LAB ENGINE                          │
+├─────────────────┬──────────────────┬─────────────────┬─────────────────┤
+│  BrowserFrame   │   TestToolbox    │ ConfigManifest  │  WireInspector  │
+│ (Labs 01 & 02)  │    (Lab 03)      │    (Lab 04)     │    (Lab 05)     │
+├─────────────────┼──────────────────┼─────────────────┼─────────────────┤
+│ • Simulated URL │ • 7 Test Vectors │ • Live Config   │ • Raw Headers   │
+│ • State Auth    │ • XSS Reflection │ • CVSS Scoring  │ • Cookie Flags  │
+│ • Record Lookup │ • Sanitizer Demo │ • Diff Baseline │ • HSTS & CORS   │
+└─────────────────┴──────────────────┴─────────────────┴─────────────────┘
 ```
 
+---
 
-## Features
+## 🛠️ Technology Stack
 
-- **Landing page** — cinematic hero, learning-path timeline, skill matrix,
-  simulation model, FAQ, and CTA.
-- **Five progressive labs** — authentication, authorization (IDOR), input
-  validation (XSS), security configuration, and HTTP security analysis.
-- **Lab engine** — one investigation loop (mission → simulate → evidence →
-  prove) reused across every lab, with tiered hints and answer validation.
-- **Multi-step investigations** — each lab is an observe → probe → decide sequence
-  (Lab 05 adds a combined final assessment), with real per-step progress.
-- **Scoring** — standardized base of 100 per lab, −3 per wrong sub-answer attempt
-  and −5 per hint, floored at 60; persisted per lab.
-- **Dashboard / Progress / Achievements** — overall ring, skill radar,
-  recommended next lab, per-lab breakdown, and an achievement gallery.
-- **Safety page** — the safe-simulation model plus a per-lab threat model.
-- **Adaptive Learning Engine** — `src/lib/engine.ts` computes recommendations,
-  skill profiles, and adaptive hint ordering deterministically based on learner progress.
-- **Local persistence** — progress is saved to `localStorage`
-  (`trinetlayer.v1`); reset it from the dashboard.
-- **Accessible + responsive** — keyboard nav, focus states, semantic landmarks,
-  `prefers-reduced-motion` fallbacks, and no horizontal overflow down to 390px.
+- **Frontend Framework:** [React 19](https://react.dev/) (Hooks, Concurrent Mode)
+- **Language:** [TypeScript 5.7+](https://www.typescriptlang.org/) (Strict Mode)
+- **Build Tooling:** [Vite 8](https://vitejs.dev/) with Fast HMR
+- **Styling & Design System:** [Tailwind CSS v4](https://tailwindcss.com/) (`@tailwindcss/vite`)
+- **Graphics & FX:** Native HTML5 Canvas 2D API + CSS Hardware-Accelerated Animations
+- **State & Storage:** React Context API + Client-side `localStorage` (`trinetlayer.v1`)
 
-## The five labs
+---
 
-| # | Codename | Category | Difficulty | Teaches |
-|---|----------|----------|------------|---------|
-| 01 | Authentication | Identity | Beginner | Username enumeration |
-| 02 | Authorization | Access Control | Beginner | IDOR / missing ownership checks |
-| 03 | Input Validation | Injection | Intermediate | Reflected XSS |
-| 04 | Security Configuration | Hardening | Intermediate | Insecure defaults & secrets |
-| 05 | HTTP Security Analysis | Traffic Analysis | Advanced | Cookie flags & security headers |
+## 📂 Repository Structure
 
-## Documentation
+```tree
+├── docs/                     # Architectural & security documentation
+│   ├── ARCHITECTURE.md       # Component hierarchy, state lifecycle, and routing
+│   ├── CONTRIBUTING.md       # Development conventions and standards
+│   ├── DEPLOYMENT.md         # Deployment configurations & guide
+│   ├── LABS.md               # Lab data schema and authoring instructions
+│   ├── SECURITY.md           # Safe-simulation boundary & threat models
+│   └── TESTING.md            # Manual and integration QA checklist
+├── src/
+│   ├── components/           # Reusable UI primitives, cards, and navigation
+│   │   ├── fx/               # Aurora background, confetti, particle canvases
+│   │   ├── hero/             # CyberNetwork canvas & hero landing components
+│   │   ├── lab/              # BrowserFrame, HintPanel, CodeEditor, Simulations
+│   │   └── ui/               # Handcrafted SVG icons and UI primitives
+│   ├── context/              # App context & global state persistence
+│   ├── lib/                  # Analytics engine, labs database, and achievements
+│   │   ├── achievements.ts   # CTF unlock conditions and badge definitions
+│   │   ├── engine.ts         # Deterministic skill scoring & recommendations
+│   │   ├── labs.ts           # 5 progressive lab scenarios & step definitions
+│   │   ├── storage.ts        # Type-safe localStorage persistence wrapper
+│   │   └── types.ts          # Core TypeScript definitions
+│   ├── pages/                # Route views (Home, Labs, Workspace, Dashboard, etc.)
+│   ├── App.tsx               # Root component & state router
+│   ├── index.css             # Tailwind v4 theme tokens & design system
+│   └── main.tsx              # Application entrypoint
+├── index.html                # HTML5 document shell
+├── package.json              # Project dependencies and npm scripts
+├── tsconfig.json             # TypeScript configuration
+├── vercel.json               # Vercel deployment settings
+└── vite.config.ts            # Clean Vite + Tailwind v4 build configuration
+```
 
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — structure, routing, state, engine.
-- [`docs/LABS.md`](docs/LABS.md) — the lab data model and how to add a lab.
-- [`docs/SECURITY.md`](docs/SECURITY.md) — safe-simulation boundary + threat models.
-- [`docs/TESTING.md`](docs/TESTING.md) — manual QA checklist.
-- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — how this app is served.
-- [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) — conventions and guardrails.
+---
 
-## License / use
+## 🚀 Quick Start / Local Development
 
-Educational use only.
+### Prerequisites
+- **Node.js** `>= 18.0.0`
+- **npm** `>= 9.0.0` or **pnpm** `>= 8.0.0`
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/lakshaysoni22/Security-Lab.git
+cd Security-Lab
+```
+
+### 2. Install dependencies
+```bash
+npm install
+# or
+pnpm install
+```
+
+### 3. Start the local development server
+```bash
+npm run dev
+# or
+pnpm dev
+```
+Open [http://localhost:8443](http://localhost:8443) (or the port displayed in your terminal) to view the application.
+
+### 4. Build for production
+```bash
+npm run build
+# Preview production bundle locally:
+npm run preview
+```
+
+---
+
+## 📜 Documentation Index
+
+Deep dive into the architecture, security mechanisms, and lab extensions:
+
+- 📐 [**Architecture Overview**](docs/ARCHITECTURE.md) — Routing, state lifecycle, and learning engine.
+- 🔬 [**Lab Authoring Guide**](docs/LABS.md) — How to add new labs, steps, and challenges.
+- 🛡️ [**Security & Threat Models**](docs/SECURITY.md) — Sandbox boundaries and threat modeling.
+- 🚢 [**Deployment Guide**](docs/DEPLOYMENT.md) — Static hosting instructions.
+- 🧪 [**Testing & QA Guide**](docs/TESTING.md) — Quality assurance test suite.
+
+---
+
+## 🔒 Security & Educational Disclaimer
+
+> **IMPORTANT:** TrinetLayer Cyber Labs is designed strictly for educational and defense-training purposes. All targets, credentials, HTTP transactions, and vulnerability flows are simulated within isolated browser memory. This platform does not interact with, target, or attack real-world infrastructure.
+
+---
+
+## 👨‍💻 Author
+
+**Lakshay Soni**
+- GitHub: [@lakshaysoni22](https://github.com/lakshaysoni22)
+- Project: [Security-Lab](https://github.com/lakshaysoni22/Security-Lab)
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
