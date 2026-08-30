@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Production builds
+dist/
+build/
+
+# Vite & build caches
+.cache/
+.vite/
+vite.config.*.timestamp-*
+*.tsbuildinfo
+*-debug.log*
+logs/
+*.log
+
+# Environment files
+.env
+.env*.local
+!.env.example
+
+# Temporary files
+.tmp-*
+
+# Deployment
+.vercel
