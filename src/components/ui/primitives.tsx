@@ -146,7 +146,7 @@ export function CountUp({
 
 /* ------------------------------------------------------------------ Tilt */
 
-/** Subtle pointer-driven 3D tilt + glare. Disabled on touch / reduced-motion. */
+/** Subtle pointer-driven 3D tilt + glare. Zero React re-renders for buttery 120Hz tracking. */
 export function Tilt({
   children,
   className,
@@ -157,47 +157,60 @@ export function Tilt({
   max?: number;
 }) {
   const reduced = usePrefersReduced();
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [style, setStyle] = useState<CSSProperties>({});
-  const [glare, setGlare] = useState<CSSProperties>({ opacity: 0 });
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const glareRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number>(0);
 
   if (reduced) return <div className={className}>{children}</div>;
 
   const onMove = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (e.pointerType === "touch") return;
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
+    const card = cardRef.current;
+    const glare = glareRef.current;
+    if (!card) return;
+
+    const r = card.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width;
     const py = (e.clientY - r.top) / r.height;
     const rx = (0.5 - py) * max * 2;
     const ry = (px - 0.5) * max * 2;
-    setStyle({
-      transform: `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`,
-      transition: "transform 0.08s ease-out",
-    });
-    setGlare({
-      opacity: 1,
-      background: `radial-gradient(circle at ${px * 100}% ${py * 100}%, rgba(255,255,255,0.12), transparent 45%)`,
+
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      card.style.transition = "transform 0.06s ease-out";
+      if (glare) {
+        glare.style.opacity = "1";
+        glare.style.background = `radial-gradient(circle at ${(px * 100).toFixed(1)}% ${(py * 100).toFixed(1)}%, rgba(255,255,255,0.12), transparent 45%)`;
+      }
     });
   };
+
   const reset = () => {
-    setStyle({ transform: "perspective(900px) rotateX(0) rotateY(0)", transition: "transform 0.4s ease" });
-    setGlare({ opacity: 0 });
+    const card = cardRef.current;
+    const glare = glareRef.current;
+    cancelAnimationFrame(rafRef.current);
+    if (card) {
+      card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+      card.style.transition = "transform 0.35s ease";
+    }
+    if (glare) {
+      glare.style.opacity = "0";
+    }
   };
 
   return (
     <div
-      ref={ref}
+      ref={cardRef}
       onPointerMove={onMove}
       onPointerLeave={reset}
       className={cx("relative", className)}
-      style={{ ...style, transformStyle: "preserve-3d" }}
+      style={{ transformStyle: "preserve-3d" }}
     >
       {children}
       <div
-        className="pointer-events-none absolute inset-0 z-10 rounded-2xl transition-opacity duration-200"
-        style={glare}
+        ref={glareRef}
+        className="pointer-events-none absolute inset-0 z-10 rounded-2xl opacity-0 transition-opacity duration-200"
         aria-hidden="true"
       />
     </div>
