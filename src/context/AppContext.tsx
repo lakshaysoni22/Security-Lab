@@ -8,7 +8,7 @@ import {
 import type { ReactNode } from "react";
 import type { EvidenceItem, Lab, LabProgress, LabStepProgress, PersistState, Route } from "../lib/types";
 import { FINAL_STEP_ID, LABS, computeScore, getLab } from "../lib/labs";
-import { defaultState, loadState, resetState, saveState } from "../lib/storage";
+import { defaultState, emptyLabProgress, loadState, resetState, saveState } from "../lib/storage";
 import { evaluateAchievements } from "../lib/achievements";
 import { AppCtx } from "./appContextCore";
 import type { AppValue } from "./appContextCore";
@@ -249,6 +249,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return correct;
   }, []);
 
+  const retakeLab = useCallback((id: string) => {
+    setState((s) => {
+      const lab = s.labs[id];
+      if (!lab || lab.status !== "completed") return s;
+      return {
+        ...s,
+        labs: {
+          ...s.labs,
+          [id]: {
+            ...emptyLabProgress(),
+            status: "in-progress",
+            startedAt: Date.now(),
+          },
+        },
+      };
+    });
+  }, []);
+
   const reset = useCallback(() => {
     setState(resetState());
     setNewlyUnlocked([]);
@@ -281,6 +299,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     markStepDone,
     submitStep,
     addTime,
+    retakeLab,
     reset,
     newlyUnlocked,
     clearUnlocked,

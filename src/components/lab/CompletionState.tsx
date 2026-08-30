@@ -13,7 +13,7 @@ function fmt(ms: number) {
 }
 
 export function CompletionState({ lab }: { lab: Lab }) {
-  const { labProgress, navigate } = useApp();
+  const { labProgress, navigate, retakeLab } = useApp();
   const p = labProgress(lab.id);
   const idx = LABS.findIndex((l) => l.id === lab.id);
   const next = LABS[idx + 1];
@@ -141,6 +141,9 @@ export function CompletionState({ lab }: { lab: Lab }) {
             View your dashboard
           </PremiumButton>
         )}
+        <PremiumButton size="lg" variant="outline" icon="play" onClick={() => retakeLab(lab.id)}>
+          Retake Lab
+        </PremiumButton>
         <PremiumButton size="lg" variant="outline" icon="layers" onClick={() => navigate({ name: "labs" })}>
           Back to labs
         </PremiumButton>

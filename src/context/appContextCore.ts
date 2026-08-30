@@ -20,6 +20,7 @@ export interface AppValue {
   /** Answer a decide-step or the final assessment; returns whether it was correct. */
   submitStep: (id: string, stepId: string, choice: string) => boolean;
   addTime: (id: string, ms: number) => void;
+  retakeLab: (id: string) => void;
   reset: () => void;
   newlyUnlocked: string[];
   clearUnlocked: () => void;

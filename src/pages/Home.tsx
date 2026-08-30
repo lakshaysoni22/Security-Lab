@@ -305,7 +305,9 @@ function HowItWorks() {
 
 /* 08 — Progress experience */
 function ProgressExperience() {
-  const { navigate } = useApp();
+  const { navigate, totalScore, completedCount, state } = useApp();
+  const pct = Math.round((completedCount / LABS.length) * 100);
+  const achCount = state.achievements.length;
   return (
     <Section>
       <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
@@ -316,17 +318,23 @@ function ProgressExperience() {
                 <div className="font-mono text-[11px] uppercase tracking-widest text-subtle">
                   Overall Progress
                 </div>
-                <div className="mt-1 text-sm text-muted-foreground">Keep the streak going</div>
+                <div className="mt-1 text-sm text-muted-foreground">
+                  {completedCount === 0
+                    ? "Start your first lab"
+                    : completedCount === LABS.length
+                      ? "All labs complete!"
+                      : "Keep the streak going"}
+                </div>
               </div>
               <Icon name="activity" size={20} className="text-cyan" />
             </div>
             <div className="mt-6 flex items-center gap-8">
-              <ProgressRing value={40} size={140} label="40%" sublabel="2 / 5 labs" animate={false} />
+              <ProgressRing value={pct} size={140} label={`${pct}%`} sublabel={`${completedCount} / ${LABS.length} labs`} animate={false} />
               <div className="space-y-3">
                 {[
-                  { label: "Score", value: "220" },
-                  { label: "Achievements", value: "3" },
-                  { label: "Streak", value: "2 labs" },
+                  { label: "Score", value: String(totalScore) },
+                  { label: "Achievements", value: String(achCount) },
+                  { label: "Completed", value: `${completedCount} labs` },
                 ].map((m) => (
                   <div key={m.label}>
                     <div className="font-display text-xl font-bold text-foreground">{m.value}</div>
