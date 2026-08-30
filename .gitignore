@@ -24,3 +24,7 @@ logs/
 
 # Deployment
 .vercel
+
+# Local reports & exports
+task-report.html
+*.pdf
