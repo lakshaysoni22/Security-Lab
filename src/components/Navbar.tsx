@@ -3,6 +3,7 @@ import { useApp } from "../context/AppContext";
 import type { Route } from "../lib/types";
 import { Icon } from "./ui/Icon";
 import { PremiumButton, cx } from "./ui/primitives";
+import { preloadAllRoutes } from "../App";
 
 const NAV: Array<{ label: string; route: Route }> = [
   { label: "Home", route: { name: "home" } },
@@ -69,6 +70,8 @@ export function Navbar() {
             <button
               key={item.label}
               onClick={() => navigate(item.route)}
+              onMouseEnter={preloadAllRoutes}
+              onFocus={preloadAllRoutes}
               className={cx(
                 "relative rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
                 isActive(item.route)
