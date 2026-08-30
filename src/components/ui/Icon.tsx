@@ -12,6 +12,7 @@ export type IconName =
   | "crown"
   | "arrow-right"
   | "arrow-down"
+  | "arrow-up-right"
   | "check"
   | "check-circle"
   | "x"
@@ -24,6 +25,7 @@ export type IconName =
   | "layers"
   | "cpu"
   | "alert"
+  | "alert-triangle"
   | "search"
   | "copy"
   | "plus"
@@ -39,6 +41,9 @@ export type IconName =
   | "book"
   | "compass"
   | "external-link"
+  | "link"
+  | "tool"
+  | "database"
   | "sparkles"
   | "play"
   | "route"
@@ -80,6 +85,7 @@ const PATHS: Record<IconName, React.JSX.Element> = {
   crown: <path d="M3 7l4 4 5-7 5 7 4-4-2 12H5L3 7z" />,
   "arrow-right": <path d="M5 12h14M13 6l6 6-6 6" />,
   "arrow-down": <path d="M12 5v14M6 13l6 6 6-6" />,
+  "arrow-up-right": <path d="M7 17L17 7M7 7h10v10" />,
   check: <path d="M20 6L9 17l-5-5" />,
   "check-circle": (
     <>
@@ -110,6 +116,13 @@ const PATHS: Record<IconName, React.JSX.Element> = {
     <>
       <path d="M12 3l9 16H3l9-16z" />
       <path d="M12 10v4M12 17h.01" />
+    </>
+  ),
+  "alert-triangle": (
+    <>
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
     </>
   ),
   search: (
@@ -172,6 +185,24 @@ const PATHS: Record<IconName, React.JSX.Element> = {
     </>
   ),
   "external-link": <path d="M14 4h6v6M20 4l-9 9M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6" />,
+  link: (
+    <>
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </>
+  ),
+  tool: (
+    <>
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+    </>
+  ),
+  database: (
+    <>
+      <ellipse cx="12" cy="5" rx="9" ry="3" />
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+    </>
+  ),
   sparkles: <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z" />,
   play: <path d="M7 5l12 7-12 7V5z" />,
   route: (
@@ -196,6 +227,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
 }
 
 export function Icon({ name, size = 20, strokeWidth = 1.7, ...rest }: IconProps) {
+  const path = PATHS[name] || PATHS.shield;
   return (
     <svg
       width={size}
@@ -209,7 +241,7 @@ export function Icon({ name, size = 20, strokeWidth = 1.7, ...rest }: IconProps)
       aria-hidden="true"
       {...rest}
     >
-      {PATHS[name]}
+      {path}
     </svg>
   );
 }
