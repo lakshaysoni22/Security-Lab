@@ -621,7 +621,7 @@ const GLOSSARY: GlossaryEntry[] = [
     term: "SQL Injection (SQLi)",
     category: "Attacks",
     definition: "An injection attack occurring when untrusted user input is directly concatenated into SQL query strings, allowing an adversary to alter query syntax, bypass authentication, extract database dumps, or execute remote commands.",
-    example: "Entering `' OR '1'='1' --` into a login username box turns `SELECT * FROM users WHERE user = '" + input + "'` into a condition that always evaluates to true, logging in without a password.",
+    example: "Entering `' OR '1'='1' --` into a login username box turns `SELECT * FROM users WHERE user = '$USER_INPUT'` into a condition that always evaluates to true, logging in without a password.",
     mitigation: "Always use Prepared Statements (Parameterized Queries) or Object-Relational Mappers (ORMs). Never concatenate strings into SQL statements.",
   },
   {
