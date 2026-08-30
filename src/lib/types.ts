@@ -8,6 +8,7 @@ export type Route =
   | { name: "achievements" }
   | { name: "about" }
   | { name: "safety" }
+  | { name: "privacy" }
   | { name: "notfound" }
   | { name: "lab"; labId: string };
 

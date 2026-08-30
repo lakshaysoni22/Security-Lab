@@ -1,7 +1,7 @@
 import type { LabProgress, PersistState } from "./types";
 import { LABS } from "./labs";
 
-const KEY = "trinetlayer.v1";
+const KEY = "cyber-labs.v1";
 const VERSION = 1;
 
 export function emptyLabProgress(): LabProgress {

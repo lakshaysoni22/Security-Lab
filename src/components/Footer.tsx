@@ -18,6 +18,7 @@ const COLS: Array<{ title: string; links: Array<{ label: string; route: Route }>
     links: [
       { label: "Reference", route: { name: "resources" } },
       { label: "Safety Model", route: { name: "safety" } },
+      { label: "Privacy Policy", route: { name: "privacy" } },
       { label: "About", route: { name: "about" } },
       { label: "Overview", route: { name: "home" } },
     ],
