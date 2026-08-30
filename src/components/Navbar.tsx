@@ -48,7 +48,7 @@ export function Navbar() {
         <button
           onClick={() => navigate({ name: "home" })}
           className="group flex items-center gap-2.5"
-          aria-label="TrinetLayer home"
+          aria-label="Cyber Labs home"
         >
           <span className="relative grid h-9 w-9 place-items-center rounded-lg bg-primary/15 text-cyan ring-1 ring-cyan/30">
             <Icon name="shield" size={20} />
@@ -56,10 +56,10 @@ export function Navbar() {
           </span>
           <span className="hidden sm:block">
             <span className="block font-display text-sm font-semibold leading-none tracking-wide text-foreground">
-              TRINETLAYER
+              CYBER LABS
             </span>
-            <span className="block font-mono text-[10px] uppercase tracking-[0.3em] text-cyan/80">
-              Cyber Labs
+            <span className="block font-mono text-[10px] uppercase tracking-[0.25em] text-cyan/80">
+              Security Platform
             </span>
           </span>
         </button>

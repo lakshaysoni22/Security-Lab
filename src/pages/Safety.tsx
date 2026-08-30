@@ -33,7 +33,7 @@ export function Safety() {
       <SectionHeader
         eyebrow="Safety Model"
         title="Real vulnerabilities. Zero real risk."
-        description="TrinetLayer is an educational simulation. Every technique you practise is genuine — but it only ever runs against fictional, local targets designed to be broken."
+        description="Cyber Labs is an educational simulation. Every technique you practise is genuine — but it only ever runs against fictional, local targets designed to be broken."
       />
 
       <Reveal className="mt-10">

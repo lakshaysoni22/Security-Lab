@@ -100,7 +100,7 @@ function WhyLearn() {
   return (
     <Section>
       <SectionHeader
-        eyebrow="Why TrinetLayer"
+        eyebrow="Why Cyber Labs"
         title="Built to change how you think, not just what you know"
         description="Cybersecurity is a practice, not a syllabus. These labs train the instinct to spot, prove, and close vulnerabilities."
       />
@@ -432,7 +432,7 @@ function StudentJourney() {
 const FAQS: Array<{ q: string; a: string }> = [
   {
     q: "Is any of this happening against real systems?",
-    a: "No. Every target is a fictional app that runs entirely in your browser. TrinetLayer never contacts real websites, servers, accounts, or IP addresses — the techniques are real, the targets are not.",
+    a: "No. Every target is a fictional app that runs entirely in your browser. Cyber Labs never contacts real websites, servers, accounts, or IP addresses — the techniques are real, the targets are not.",
   },
   {
     q: "Do I need to install any external tools or API keys?",

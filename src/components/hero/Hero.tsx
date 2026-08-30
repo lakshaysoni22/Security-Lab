@@ -80,7 +80,7 @@ export function Hero() {
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan/25 bg-cyan/5 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.25em] text-cyan">
             <span className="h-1.5 w-1.5 rounded-full bg-cyan" style={{ animation: "pulse-ring 2s infinite" }} />
-            TrinetLayer Cyber Labs
+            Cyber Labs
           </div>
 
           <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">

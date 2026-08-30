@@ -35,7 +35,7 @@ export function About() {
       <SectionHeader
         eyebrow="About"
         title="A cyber range built for learning, not liability"
-        description="TrinetLayer Cyber Labs is the hands-on training arm of TrinetLayer — the team behind GhostJS, a secret-scanning engine for modern web apps. We build tools that find exposed API keys, tokens, and credentials across live JavaScript, subdomains, and source maps. This platform turns that same application-security knowledge into guided investigations so you can learn to think like a defender."
+        description="Cyber Labs is a hands-on cybersecurity training platform designed for security enthusiasts and learners. We turn application-security knowledge into guided investigations so you can learn to think like a defender."
       />
 
       <Reveal className="mt-10">
@@ -46,7 +46,7 @@ export function About() {
             </span>
             <p className="text-sm leading-relaxed text-muted-foreground">
               <span className="font-semibold text-foreground">An honest note:</span> this is an
-              educational platform built by the TrinetLayer team for security researchers, bug hunters,
+              educational platform built for security researchers, bug hunters,
               and application-security engineers in training. The organisations, portals, and records
               in every lab are fictional and exist only to teach. Nothing here interacts with real
               infrastructure, and no real scanning or attacks are performed.

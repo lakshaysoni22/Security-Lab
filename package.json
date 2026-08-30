@@ -1,6 +1,6 @@
 {
-  "name": "trinetlayer-cyber-labs",
-  "description": "TrinetLayer Cyber Labs — Hands-on Cybersecurity Learning Platform",
+  "name": "cyber-labs",
+  "description": "Cyber Labs — Hands-on Cybersecurity Learning Platform",
   "private": true,
   "version": "1.0.0",
   "type": "module",

@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ TrinetLayer Cyber Labs
+# 🛡️ Cyber Labs
 ### *Interactive Cyber Range & Hands-On Application Security Learning Platform*
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://security-lab-ivory.vercel.app)
@@ -12,7 +12,7 @@
 
 <br />
 
-**TrinetLayer Cyber Labs** is a modern, gamified cyber learning platform designed to teach practical application security from a defender's perspective. Featuring five guided, multi-step investigations, learners analyze and patch real vulnerabilities inside **100% safe, client-side browser simulations**.
+**Cyber Labs** is a modern, gamified cyber learning platform designed to teach practical application security from a defender's perspective. Featuring five guided, multi-step investigations, learners analyze and patch real vulnerabilities inside **100% safe, client-side browser simulations**.
 
 [**Explore Live Platform**](https://security-lab-ivory.vercel.app) • [**View Lab Catalog**](#-the-five-security-labs) • [**Architecture**](docs/ARCHITECTURE.md) • [**Security Boundary**](docs/SECURITY.md)
 
@@ -45,11 +45,11 @@
 
 ## 🖥️ Interactive Simulation Engines
 
-TrinetLayer features four purpose-built simulation engines:
+Cyber Labs features four purpose-built simulation engines:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                        TRINETLAYER LAB ENGINE                          │
+│                          CYBER LABS ENGINE                             │
 ├─────────────────┬──────────────────┬─────────────────┬─────────────────┤
 │  BrowserFrame   │   TestToolbox    │ ConfigManifest  │  WireInspector  │
 │ (Labs 01 & 02)  │    (Lab 03)      │    (Lab 04)     │    (Lab 05)     │
@@ -159,7 +159,7 @@ Deep dive into the architecture, security mechanisms, and lab extensions:
 
 ## 🔒 Security & Educational Disclaimer
 
-> **IMPORTANT:** TrinetLayer Cyber Labs is designed strictly for educational and defense-training purposes. All targets, credentials, HTTP transactions, and vulnerability flows are simulated within isolated browser memory. This platform does not interact with, target, or attack real-world infrastructure.
+> **IMPORTANT:** Cyber Labs is designed strictly for educational and defense-training purposes. All targets, credentials, HTTP transactions, and vulnerability flows are simulated within isolated browser memory. This platform does not interact with, target, or attack real-world infrastructure.
 
 ---
 

@@ -39,7 +39,7 @@ interface Line {
 const BUILTIN_CMDS = ["help", "clear", "history"];
 
 export function TerminalEmulator({
-  prompt = "analyst@trinetlayer",
+  prompt = "analyst@cyberlabs",
   banner,
   commands,
   helpText,

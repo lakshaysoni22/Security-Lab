@@ -2,7 +2,7 @@ import type { Lab, LabProgress, PersistState } from "./types";
 import { LABS, SKILL_AXES, getLab } from "./labs";
 
 /**
- * TrinetLayer learning engine.
+ * Cyber Labs learning engine.
  *
  * A pure, deterministic, fully-offline analytics engine that turns saved progress into
  * recommendations, skill profiles, and adaptive hint ordering. It operates completely

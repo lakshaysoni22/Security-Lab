@@ -36,16 +36,16 @@ export function Footer() {
             </span>
             <span>
               <span className="block font-display text-sm font-semibold tracking-wide">
-                TRINETLAYER
+                CYBER LABS
               </span>
-              <span className="block font-mono text-[10px] uppercase tracking-[0.3em] text-cyan/80">
-                Cyber Labs
+              <span className="block font-mono text-[10px] uppercase tracking-[0.25em] text-cyan/80">
+                Security Platform
               </span>
             </span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-            From the team behind GhostJS — TrinetLayer&apos;s secret-scanning engine. Learn to think
-            like a defender through safe, simulated investigations.
+            Hands-on cybersecurity training and interactive defense simulations. Learn to think
+            like a defender through safe, guided investigations.
           </p>
           <div className="mt-5 inline-flex items-center gap-2 rounded-lg bg-success/10 px-3 py-1.5 font-mono text-xs text-success">
             <span className="h-1.5 w-1.5 rounded-full bg-success" style={{ animation: "pulse-ring 2s infinite" }} />
@@ -75,7 +75,7 @@ export function Footer() {
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs text-subtle sm:flex-row sm:px-8">
-          <span className="font-mono">© 2026 TrinetLayer Cyber Labs · Educational use only</span>
+          <span className="font-mono">© 2026 Cyber Labs · Educational use only</span>
           <span className="font-mono">Built for defenders in training</span>
         </div>
       </div>

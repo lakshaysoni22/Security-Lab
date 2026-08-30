@@ -520,10 +520,10 @@ function AuthPractical({ report, onFlagReveal, flagRevealed }: { report: Report;
       </div>
 
       <TerminalEmulator
-        prompt="analyst@trinetlayer"
+        prompt="analyst@cyberlabs"
         banner={[
           "╔══════════════════════════════════════════════════════════╗",
-          "║  TRINETLAYER CYBER LABS — Lab 01: Auth Enumeration     ║",
+          "║  CYBER LABS — Lab 01: Auth Enumeration                   ║",
           "║  Target: https://portal.northstar-systems.internal     ║",
           "║  Objective: Enumerate valid user accounts               ║",
           "╚══════════════════════════════════════════════════════════╝",
