@@ -1,28 +1,34 @@
 {
-  "name": "cyber-labs",
-  "description": "Cyber Labs — Hands-on Cybersecurity Learning Platform",
+  "name": "LEAtTrace-x",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
-    "preview": "vite preview",
-    "format": "oxfmt"
-  },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "install:all": "npm --prefix frontend install",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "cd backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload",
+    "dev": "npx concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build": "cd frontend && npm install && npm run build",
+    "preview": "npm run preview --prefix frontend"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "^6.0.0",
-    "tailwindcss": "^4.0.0",
-    "@tailwindcss/vite": "^4.0.0",
-    "oxfmt": "^0.2.0",
-    "typescript": "^5.7.0",
-    "vite": "^8.0.5"
+    "@tailwindcss/vite": "^4.3.1",
+    "@types/cytoscape": "^3.21.9",
+    "@types/uuid": "^10.0.0",
+    "tailwindcss": "^4.3.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.12"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.101.0",
+    "clsx": "^2.1.1",
+    "cytoscape": "^3.34.0",
+    "date-fns": "^4.4.0",
+    "lucide-react": "^1.21.0",
+    "react-router-dom": "^7.18.0",
+    "recharts": "^3.8.1",
+    "tailwind-merge": "^3.6.0",
+    "uuid": "^14.0.0",
+    "zustand": "^5.0.14"
   }
 }

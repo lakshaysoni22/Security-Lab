@@ -1,0 +1,115 @@
+# ==================================================
+# LEATrace — Docker Compose (Development + Production)
+# ==================================================
+# Usage:
+#   Development:  docker compose up
+#   Production:   docker compose --profile production up
+
+services:
+  # --- PostgreSQL Database ---
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: leatrace
+      POSTGRES_USER: leatrace
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_in_production}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leatrace -d leatrace"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- Redis Cache ---
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-changeme_in_production} --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-changeme_in_production}", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # --- Neo4j Graph Database ---
+  neo4j:
+    image: neo4j:5-community
+    restart: unless-stopped
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-changeme_in_production}
+      NEO4J_PLUGINS: '["apoc"]'
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:7474 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # --- LEATrace Backend API ---
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://leatrace:${POSTGRES_PASSWORD:-changeme_in_production}@postgres:5432/leatrace
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-changeme_in_production}
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-changeme_in_production}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-CHANGE_THIS_TO_A_RANDOM_64_CHAR_STRING}
+      LEATrace_DEMO_DATA: ${DEMO_DATA:-false}
+      LEATrace_BACKGROUND_TASKS: ${BACKGROUND_TASKS:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      WORKERS: ${WORKERS:-4}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # --- OpenSearch (Full-text IOC search, log aggregation) ---
+  opensearch:
+    image: opensearchproject/opensearch:2.11.0
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+      DISABLE_SECURITY_PLUGIN: "true"
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
+  neo4j_data:
+  opensearch_data:

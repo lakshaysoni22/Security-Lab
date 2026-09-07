@@ -1,0 +1,363 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #060810;
+    color: #e2e8f0;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0e1a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1a1f36;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2a3253;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(0, 212, 255, 0.3);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* Glass Card */
+  .glass-card {
+    @apply bg-dark-800/60 backdrop-blur-xl border border-dark-700/50 rounded-xl;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+  }
+  .glass-card-hover:hover {
+    @apply border-primary-500/30;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 212, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Glow Buttons */
+  .btn-primary {
+    @apply px-4 py-2 bg-primary-500/20 text-primary-400 border border-primary-500/30 rounded-lg font-medium text-sm
+           transition-all duration-200 hover:bg-primary-500/30 hover:border-primary-500/50 hover:shadow-glow-cyan
+           active:scale-[0.98] cursor-pointer;
+  }
+
+  .btn-danger {
+    @apply px-4 py-2 bg-accent-red/20 text-accent-red border border-accent-red/30 rounded-lg font-medium text-sm
+           transition-all duration-200 hover:bg-accent-red/30 hover:border-accent-red/50 hover:shadow-glow-red
+           active:scale-[0.98] cursor-pointer;
+  }
+
+  .btn-success {
+    @apply px-4 py-2 bg-accent-green/20 text-accent-green border border-accent-green/30 rounded-lg font-medium text-sm
+           transition-all duration-200 hover:bg-accent-green/30 hover:border-accent-green/50 hover:shadow-glow-green
+           active:scale-[0.98] cursor-pointer;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2 text-dark-300 rounded-lg font-medium text-sm
+           transition-all duration-200 hover:bg-dark-700/50 hover:text-white
+           active:scale-[0.98] cursor-pointer;
+  }
+
+  /* Status Badges */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-cyan {
+    @apply badge bg-primary-500/15 text-primary-400 border border-primary-500/30;
+  }
+
+  .badge-green {
+    @apply badge bg-accent-green/15 text-accent-green border border-accent-green/30;
+  }
+
+  .badge-red {
+    @apply badge bg-accent-red/15 text-accent-red border border-accent-red/30;
+  }
+
+  .badge-gold {
+    @apply badge bg-accent-gold/15 text-accent-gold border border-accent-gold/30;
+  }
+
+  .badge-purple {
+    @apply badge bg-accent-purple/15 text-accent-purple border border-accent-purple/30;
+  }
+
+  /* Input Fields */
+  .input-field {
+    @apply w-full px-4 py-2.5 bg-dark-900/80 border border-dark-600/50 rounded-lg text-white placeholder-dark-400
+           focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/20
+           transition-all duration-200 text-sm;
+  }
+
+  /* Stat Card */
+  .stat-card {
+    @apply glass-card p-5 relative overflow-hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-5;
+    background: linear-gradient(135deg, var(--stat-color, #00d4ff) 0%, transparent 60%);
+  }
+
+  /* Sidebar Nav Item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-dark-300
+           transition-all duration-200 cursor-pointer;
+  }
+  .nav-item:hover {
+    @apply bg-dark-700/50 text-white;
+  }
+  .nav-item.active {
+    @apply bg-primary-500/10 text-primary-400 border-l-2 border-primary-400;
+  }
+
+  /* Table */
+  .data-table {
+    @apply w-full border-collapse;
+  }
+  .data-table th {
+    @apply px-4 py-3 text-left text-xs font-semibold text-dark-300 uppercase tracking-wider border-b border-dark-700/50;
+  }
+  .data-table td {
+    @apply px-4 py-3 text-sm text-dark-200 border-b border-dark-800/50;
+  }
+  .data-table tr {
+    @apply transition-colors duration-150;
+  }
+  .data-table tbody tr:hover {
+    @apply bg-dark-700/30;
+  }
+
+  /* Pulse Dot */
+  .pulse-dot {
+    @apply relative inline-block w-2 h-2 rounded-full;
+  }
+  .pulse-dot::before {
+    content: '';
+    @apply absolute inset-0 rounded-full animate-ping opacity-75;
+    background: inherit;
+  }
+
+  /* Scan Line Effect */
+  .scan-effect {
+    @apply relative overflow-hidden;
+  }
+  .scan-effect::after {
+    content: '';
+    @apply absolute left-0 w-full h-px opacity-10 animate-scan-line pointer-events-none;
+    background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+    top: 0;
+  }
+
+  /* Grid Background */
+  .grid-bg {
+    background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                       linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Risk Score Meter */
+  .risk-meter {
+    @apply h-2 rounded-full bg-dark-700 overflow-hidden;
+  }
+  .risk-meter-fill {
+    @apply h-full rounded-full transition-all duration-1000 ease-out;
+  }
+}
+
+@layer utilities {
+  .text-glow-cyan {
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  }
+
+  .text-glow-green {
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+  }
+
+  .text-glow-red {
+    text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  /* GPU Acceleration & Snappy Transitions */
+  .gpu-accelerated {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform, opacity;
+  }
+
+  .transition-snappy {
+    transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), opacity 150ms cubic-bezier(0.16, 1, 0.3, 1), background-color 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+  }
+
+  /* Accessibility WCAG 2.2 focus ring helper */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950;
+  }
+
+  /* Safe Minimum Touch Targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}
+
+/* Reduced motion media query (WCAG 2.2 AAA support) */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* 3D Door Login Button Animation (Sleek Slim Edition) */
+.door-login-btn {
+  position: relative;
+  perspective: 600px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.door-login-btn .door-container {
+  position: relative;
+  width: 22px;
+  height: 28px;
+  perspective: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.door-login-btn .door-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid rgba(0, 212, 255, 0.8);
+  border-radius: 4px;
+  background: rgba(8, 12, 22, 0.95);
+  box-shadow: inset 0 0 8px rgba(0, 212, 255, 0.5);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.door-login-btn .door-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #00d4ff 0%, #0284c7 100%);
+  border-radius: 2px;
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 2px;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+  z-index: 10;
+}
+
+.door-login-btn .door-knob {
+  width: 3.5px;
+  height: 3.5px;
+  background-color: #facc15;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #facc15;
+}
+
+.door-login-btn .door-person {
+  position: absolute;
+  left: -12px;
+  bottom: 2px;
+  width: 12px;
+  height: 20px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0.8;
+  z-index: 5;
+}
+
+/* Hover, Focus, Submitting triggers door swing open & person walking in */
+.door-login-btn:hover .door-panel,
+.door-login-btn:focus .door-panel,
+.door-login-btn.is-submitting .door-panel {
+  transform: rotateY(-72deg);
+}
+
+.door-login-btn:hover .door-person,
+.door-login-btn:focus .door-person,
+.door-login-btn.is-submitting .door-person {
+  transform: translateX(17px);
+  opacity: 1;
+}
+
+@keyframes legSwing {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(25deg); }
+}
+
+.door-login-btn:hover .door-person-leg,
+.door-login-btn.is-submitting .door-person-leg {
+  animation: legSwing 0.35s infinite alternate ease-in-out;
+  transform-origin: top center;
+}
+
+/* OTP Slot Animations & Cursor Glow */
+@keyframes popDigit {
+  0% { transform: scale(0.75); opacity: 0.3; }
+  60% { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop-digit {
+  animation: popDigit 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulseSlotGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.2), inset 0 0 8px rgba(0, 212, 255, 0.1); }
+  50% { box-shadow: 0 0 22px rgba(0, 212, 255, 0.6), inset 0 0 12px rgba(0, 212, 255, 0.3); }
+}
+
+.animate-pulse-glow {
+  animation: pulseSlotGlow 1.8s infinite ease-in-out;
+}
+
+
+

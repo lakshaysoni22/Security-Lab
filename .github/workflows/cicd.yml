@@ -1,0 +1,47 @@
+name: LEAtTrace Security CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  backend-security:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run import and syntax checks
+        run: |
+          python -m compileall app
+          python - <<'PY'
+          from app.main import app
+          assert app.title.upper() == 'LEATRACE API'
+          print('app import ok')
+          PY
+
+      - name: Run security regression tests
+        run: |
+          python -m pytest -q tests/test_security_integrations.py tests/test_security.py tests/test_iam.py tests/test_api_security.py tests/test_siem_correlation.py
+
+      - name: Build backend container image
+        run: |
+          docker build -t leattrace-backend:ci -f Dockerfile .

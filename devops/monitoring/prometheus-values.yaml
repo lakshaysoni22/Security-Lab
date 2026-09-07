@@ -1,0 +1,76 @@
+prometheus:
+  prometheusSpec:
+    scrapeInterval: "15s"
+    evaluationInterval: "15s"
+    retention: "15d"
+    
+    # Additional scrape configs targeting LEAtTrace components
+    additionalScrapeConfigs:
+      - job_name: 'LEAtTrace-backend'
+        metrics_path: '/metrics'
+        static_configs:
+          - targets: ['LEAtTrace-backend-service.LEAtTrace-prod.svc.cluster.local:8000']
+          
+      - job_name: 'LEAtTrace-indexer'
+        metrics_path: '/metrics'
+        static_configs:
+          - targets: ['LEAtTrace-indexer-service.LEAtTrace-prod.svc.cluster.local:8000']
+
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: 'email-alerts'
+    receivers:
+      - name: 'email-alerts'
+        email_configs:
+          - to: 'admin.alerts@cybercrime.gov.in'
+            from: 'prometheus@LEAtTrace.gov.in'
+            smarthost: 'smtp.cybercrime.gov.in:587'
+            auth_username: 'prometheus'
+            auth_password: 'SecureSMTPPassword2026'
+
+  # Core System Alerts Rules
+  serverFiles:
+    alerting_rules.yml:
+      groups:
+        - name: LEAtTrace-core-rules
+          rules:
+            - alert: InstanceDown
+              expr: up == 0
+              for: 1m
+              labels:
+                severity: critical
+              annotations:
+                summary: "LEAtTrace component is offline."
+                description: "Instance {{ $labels.instance }} has been offline for more than 1 minute."
+
+            - alert: IndexerBlockLagging
+              expr: block_lag_blocks > 20
+              for: 5m
+              labels:
+                severity: warning
+              annotations:
+                summary: "Blockchain sync lags behind mainnet."
+                description: "Block sync lag is {{ $value }} blocks. Check RPC endpoints latencies."
+
+            - alert: HighMemoryUsage
+              expr: container_memory_usage_bytes{container="backend"} / container_spec_memory_limit_bytes > 0.85
+              for: 2m
+              labels:
+                severity: warning
+              annotations:
+                summary: "FastAPI Pod running out of memory."
+
+            - alert: DatabaseConnectionFailure
+              expr: database_online_status == 0
+              for: 30s
+              labels:
+                severity: critical
+              annotations:
+                summary: "PostgreSQL or SQLite database connection offline."

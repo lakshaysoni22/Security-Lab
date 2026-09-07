@@ -1,0 +1,9 @@
+apiVersion: v2
+name: leattrace
+description: Production Helm Chart for LEATrace National Cybercrime Investigation Platform
+type: application
+version: 2.0.0
+appVersion: "2.0.0"
+maintainers:
+  - name: LEATrace DevSecOps Team
+    email: devsecops@leattrace.gov.in

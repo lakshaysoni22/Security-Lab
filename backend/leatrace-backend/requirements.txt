@@ -1,0 +1,13 @@
+fastapi>=0.100.0
+uvicorn>=0.22.0
+pydantic[email]>=2.0
+pydantic-settings>=2.0
+sqlalchemy>=2.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+httpx>=0.24.0
+pymongo>=4.0
+redis>=4.0
+pycryptodome>=3.18.0
+cryptography>=41.0.0
+networkx>=3.0

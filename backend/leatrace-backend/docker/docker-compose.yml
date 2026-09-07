@@ -1,0 +1,89 @@
+version: "3.8"
+
+services:
+  # Nginx Load Balancer / Reverse Proxy
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - gateway
+
+  # API Gateway
+  gateway:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    command: uvicorn gateway.main:app --host 0.0.0.0 --port 8000
+    environment:
+      - DATABASE_URL=sqlite:///./LEAtTrace_micro.db
+      - AUTH_SERVICE_URL=http://auth_service:8001
+      - CPOS_SERVICE_URL=http://cpos_service:8002
+      - RIIL_SERVICE_URL=http://riil_service:8003
+      - NGEL_SERVICE_URL=http://ngel_service:8004
+      - QCAL_SERVICE_URL=http://qcal_service:8005
+      - BLOCKCHAIN_SERVICE_URL=http://blockchain_service:8007
+      - INVESTIGATION_SERVICE_URL=http://investigation_service:8008
+    ports:
+      - "8000:8000"
+
+  # Auth Service
+  auth_service:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    command: uvicorn services.auth_service.main:app --host 0.0.0.0 --port 8001
+    environment:
+      - DATABASE_URL=sqlite:///./LEAtTrace_micro.db
+
+  # CPOS Engine Service
+  cpos_service:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    command: uvicorn services.cpos_service.main:app --host 0.0.0.0 --port 8002
+    environment:
+      - DATABASE_URL=sqlite:///./LEAtTrace_micro.db
+      - NGEL_SERVICE_URL=http://ngel_service:8004
+      - QCAL_SERVICE_URL=http://qcal_service:8005
+
+  # RIIL Service
+  riil_service:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    command: uvicorn services.riil_service.main:app --host 0.0.0.0 --port 8003
+
+  # NGEL Service
+  ngel_service:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    command: uvicorn services.ngel_service.main:app --host 0.0.0.0 --port 8004
+
+  # QCAL Service
+  qcal_service:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    command: uvicorn services.qcal_service.main:app --host 0.0.0.0 --port 8005
+
+  # Blockchain Intelligence Service
+  blockchain_service:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    command: uvicorn services.blockchain_service.main:app --host 0.0.0.0 --port 8007
+
+  # AI Investigation Service
+  investigation_service:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    command: uvicorn services.investigation_service.main:app --host 0.0.0.0 --port 8008
+    environment:
+      - DATABASE_URL=sqlite:///./LEAtTrace_micro.db
+      - CPOS_SERVICE_URL=http://cpos_service:8002
+      - BLOCKCHAIN_SERVICE_URL=http://blockchain_service:8007

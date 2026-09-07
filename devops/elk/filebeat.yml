@@ -1,0 +1,28 @@
+filebeat.inputs:
+- type: filestream
+  id: LEAtTrace-backend-logs
+  enabled: true
+  paths:
+    - /var/log/LEAtTrace/*.log
+  fields:
+    type: fastapi
+
+- type: filestream
+  id: nginx-access-logs
+  enabled: true
+  paths:
+    - /var/log/nginx/access.log
+    - /var/log/nginx/error.log
+  fields:
+    type: nginx
+
+output.logstash:
+  hosts: ["logstash:5044"]
+
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat
+  keepfiles: 7
+  permissions: 0640

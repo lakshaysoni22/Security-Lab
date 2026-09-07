@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'LEAtTrace-gateway'
+    static_configs:
+      - targets: ['gateway:8000']
+
+  - job_name: 'cpos-service'
+    static_configs:
+      - targets: ['cpos_service:8002']
+
+  - job_name: 'blockchain-service'
+    static_configs:
+      - targets: ['blockchain_service:8007']
+
+  - job_name: 'investigation-service'
+    static_configs:
+      - targets: ['investigation_service:8008']

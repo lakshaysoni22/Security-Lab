@@ -1,0 +1,23 @@
+apiVersion: v2
+name: LEAtTrace
+description: Law Enforcement Advanced Trace Intelligence Platform Enterprise Chart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - blockchain
+  - forensics
+  - siem
+  - threat-intelligence
+maintainers:
+  - name: LEAtTrace Platform Architects
+    email: architects@LEAtTrace.gov.in
+dependencies:
+  - name: postgresql
+    version: 12.1.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: 17.3.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled

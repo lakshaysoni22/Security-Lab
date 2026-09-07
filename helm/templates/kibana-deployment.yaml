@@ -1,0 +1,42 @@
+{{- if .Values.kibana.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "LEAtTrace.fullname" . }}-kibana
+  labels:
+    app: {{ include "LEAtTrace.name" . }}-kibana
+spec:
+  replicas: {{ .Values.kibana.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "LEAtTrace.name" . }}-kibana
+  template:
+    metadata:
+      labels:
+        app: {{ include "LEAtTrace.name" . }}-kibana
+    spec:
+      containers:
+        - name: kibana
+          image: "{{ .Values.kibana.image.repository }}:{{ .Values.kibana.image.tag }}"
+          ports:
+            - containerPort: 5601
+              name: ui
+          resources:
+            {{- toYaml .Values.kibana.resources | nindent 12 }}
+          env:
+            - name: ELASTICSEARCH_HOSTS
+              value: "http://{{ include "LEAtTrace.fullname" . }}-elasticsearch:{{ .Values.elasticsearch.service.port }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "LEAtTrace.fullname" . }}-kibana
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.kibana.service.port }}
+      targetPort: ui
+      name: ui
+  selector:
+    app: {{ include "LEAtTrace.name" . }}-kibana
+{{- end }}

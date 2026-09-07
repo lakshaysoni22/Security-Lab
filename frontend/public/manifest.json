@@ -1,0 +1,31 @@
+{
+  "name": "LEAtTrace Blockchain Intelligence",
+  "short_name": "LEAtTrace",
+  "description": "Law Enforcement Blockchain Forensic & Cyber Intelligence Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#060810",
+  "theme_color": "#060810",
+  "categories": ["security", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Case Management",
+      "url": "/?page=cases",
+      "description": "Manage criminal blockchain case files"
+    },
+    {
+      "name": "Blockchain Trace",
+      "url": "/?page=blockchain",
+      "description": "Trace suspicious crypto wallet addresses"
+    }
+  ]
+}

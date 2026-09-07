@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpos-service
+  namespace: LEAtTrace
+  labels:
+    app: cpos-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cpos-service
+  template:
+    metadata:
+      labels:
+        app: cpos-service
+    spec:
+      containers:
+      - name: cpos
+        image: LEAtTrace/cpos:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8002
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://postgres:postgres@postgres-db:5432/LEAtTrace"
+        - name: NGEL_SERVICE_URL
+          value: "http://ngel-service:8004"
+        - name: QCAL_SERVICE_URL
+          value: "http://qcal-service:8005"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cpos-service
+  namespace: LEAtTrace
+spec:
+  ports:
+  - port: 8002
+    targetPort: 8002
+  selector:
+    app: cpos-service
